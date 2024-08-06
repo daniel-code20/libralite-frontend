@@ -22,7 +22,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const uploadLink = createUploadLink({
-  uri: 'https://libralite-production.up.railway.app/',
+  uri: 'libralite-production.up.railway.app',
 });
 
 const client = new ApolloClient({
