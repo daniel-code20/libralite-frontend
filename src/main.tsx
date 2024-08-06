@@ -22,7 +22,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const uploadLink = createUploadLink({
-  uri: 'http://localhost:3000/api/graphql',
+  uri: 'https://libralite-production.up.railway.app/api/graphql',
 });
 
 const client = new ApolloClient({
