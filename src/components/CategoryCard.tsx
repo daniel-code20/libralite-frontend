@@ -23,7 +23,6 @@ const GET_ALL_BOOKS = gql`
       id
       name
       image {
-        id
         url
       }
     }
