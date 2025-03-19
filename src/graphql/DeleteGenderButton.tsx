@@ -55,7 +55,7 @@ const DeleteGenderButton: React.FC<DeleteGenderButtonProps> = ({ genderId }) => 
       color="danger"
       className="ml-4"
       radius="sm"
-      variant="flat"
+      variant="light"
       onClick={handleDelete}
       
     >

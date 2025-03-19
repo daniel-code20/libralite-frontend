@@ -95,9 +95,9 @@ const AdminCategoryModal = () => {
   return (
     <>
       <Button
-        color="primary" radius="sm" variant="shadow"
+        color="primary" radius="sm" variant="flat"
         onClick={onOpen}
-        className='mt-4 text-white'
+        className='mt-4 font-medium'
       >
         Agregar Género
       </Button>
@@ -129,10 +129,10 @@ const AdminCategoryModal = () => {
                     />
                   </div>
 
-                  <Button type="submit" color="primary" radius="sm" variant="shadow" className='mr-4 mt-4 mb-4'>
+                  <Button type="submit" color="primary" radius="sm" variant="flat" className='mr-4 mt-4 mb-4 font-medium'>
                     Agregar
                   </Button>
-                <Button color="danger" variant="flat" radius="sm" onClick={onClose}>
+                <Button color="danger" variant="light" radius="sm" onClick={onClose}>
                   Cancelar
                 </Button>
                 </form>

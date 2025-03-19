@@ -42,9 +42,9 @@ export const AdminGenderCard = () => {
   return (
     <>
       <div className="flex flex-col items-start justify-start animate__animated animate__fadeIn shadow-md bg-white rounded-md w-full overflow-hidden">
-      <div className="px-8 w-full">
+      <div className="px-4 w-full">
           <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-black mt-4">Géneros</h1>
+          <h2 className="text-2xl font-bold mb-4 text-black mt-4">Géneros</h2>
             <AdminCategoryModal />
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">

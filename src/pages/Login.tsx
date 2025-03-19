@@ -67,7 +67,7 @@ export const Login = () => {
             BookFlow
           </h3>
         </div>
-        <h1 className="text-3xl font-bold mb-4">¡Bienvenido a BookFlow!</h1>
+        <h1 className="text-3xl font-bold mb-4">¡Bienvenido a BookFlow!👋</h1>
         <p className="text-gray-500 mb-4 ">
           Inicia sesión para ver nuestro stock disponible y disfruta de los mejores libros.
         </p>

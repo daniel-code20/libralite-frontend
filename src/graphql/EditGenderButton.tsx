@@ -98,7 +98,8 @@ const EditGenderButton: React.FC<{ gender: Gender }> = ({ gender }) => {
       <Button
         color="primary"
         radius="sm"
-        variant="shadow"
+        variant="flat"
+        className='font-medium'
         onClick={() => {
           onOpen();
           setCategoryName(gender.name);
@@ -132,10 +133,10 @@ const EditGenderButton: React.FC<{ gender: Gender }> = ({ gender }) => {
                 />
               </div>
 
-              <Button type="submit" color="primary" radius="sm" variant="shadow" className='mr-4 mt-4 mb-4'>
+              <Button type="submit" color="primary" radius="sm" variant="flat" className='mr-4 mt-4 mb-4 font-medium'>
                 Actualizar
               </Button>
-            <Button color="danger" variant="flat" radius="sm" onClick={onClose}>
+            <Button color="danger" variant="light" radius="sm" onClick={onClose}>
               Cancelar
             </Button>
             </form>
