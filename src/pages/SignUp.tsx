@@ -80,13 +80,13 @@ export const SignUp = () => {
   return (
     <div className="flex h-screen overflow-hidden animate__animated animate__fadeIn">
       <div className="flex-1 flex justify-center items-center p-6 md:p-12 bg-white">
-        <div className="w-full max-w-lg shadow-2xl p-4 rounded-md">
-          <div className="flex items-center text-cyan-400 mb-6">
+        <div className="w-full max-w-lg  p-4 rounded-md shadow-2xl">
+          <div className="flex items-center text-cyan-400 mb-2">
             <img src={logoImg} alt="logo" className="w-11 mr-3" />
-            <h3 className="font-bold bg-gradient-to-tr from-blue-500 to-cyan-400 text-transparent bg-clip-text loading-noreal">LibraLite</h3>
+            <h3 className="font-bold bg-gradient-to-tr from-blue-500 to-cyan-400 text-transparent bg-clip-text loading-noreal">BookFlow</h3>
           </div>
-          <h1 className="text-2xl font-bold mb-4">Crear Cuenta</h1>
-          <p className="text-black mb-6">
+          <h1 className="text-2xl font-bold mb-2">Crear Cuenta</h1>
+          <p className="text-gray-500 mb-2">
             Crea una cuenta para ver nuestro stock disponible y disfruta de los mejores libros
           </p>
           <Form<FormValues> onSubmit={handleSignUp} validations={validations}>
@@ -96,7 +96,7 @@ export const SignUp = () => {
                 label="Nombre"
                 variant="flat"
                 radius="sm"
-                className="w-full text-black drop-shadow-md"
+                className="w-full text-black mb-2"
               />
             </FormItem>
             <FormItem<FormValues> name="email">
@@ -106,7 +106,7 @@ export const SignUp = () => {
                 radius="sm"
                 variant="flat"
                 placeholder="example@google.com"
-                className="w-full text-black drop-shadow-md"
+                className="w-full text-black mb-2"
               />
             </FormItem>
             <FormItem<FormValues> name="password">
@@ -129,7 +129,7 @@ export const SignUp = () => {
                   </button>
                 }
                 type={isVisible ? 'text' : 'password'}
-                className="w-full text-black drop-shadow-md"
+                className="w-full text-black mb-2"
               />
             </FormItem>
             <FormItem<FormValues> name="confirmPassword">
@@ -151,13 +151,13 @@ export const SignUp = () => {
                   </button>
                 }
                 type={isVisible ? 'text' : 'password'}
-                className="w-full text-black drop-shadow-md"
+                className="w-full text-black mb-2"
               />
             </FormItem>
             {error && <p>{error}</p>}
             <Button
               radius="sm"
-              className="w-full bg-gradient-to-tr from-blue-500 to-cyan-400 text-white shadow-lg h-12"
+              className="w-full bg-black font-medium text-white shadow-lg h-12"
               type="submit"
             >
               Crear Cuenta
@@ -166,7 +166,7 @@ export const SignUp = () => {
           </Form>
           <p className="mt-4 flex items-center">
             <span className="text-black">¿Ya tienes una cuenta?</span>
-            <Link to="/login" className="bg-gradient-to-tr from-blue-500 to-cyan-400 text-transparent bg-clip-text loading-noreal ml-2">
+            <Link to="/login" className="font-medium ml-2">
               Iniciar Sesión
             </Link>
           </p>

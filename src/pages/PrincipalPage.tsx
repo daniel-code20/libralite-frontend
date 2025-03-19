@@ -10,7 +10,7 @@ export const PrincipalPage = () => {
     <div className="flex min-h-screen bg-gray-100 overflow-x-hidden">
       <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className={`flex-grow flex flex-col transition-all duration-300 ${sidebarOpen ? 'ml-60' : 'ml-0'} lg:ml-60`}>
-        <header className="bg-white shadow-md flex items-center justify-between p-4 relative rounded-md ml-4 mr-4 z-10">
+        <header className="bg-white flex items-center justify-between p-4 relative z-10">
           <button className="lg:hidden p-2" onClick={() => setSidebarOpen(!sidebarOpen)}>
             {sidebarOpen ? (
               <FaTimes className="h-6 w-6 text-black" />
