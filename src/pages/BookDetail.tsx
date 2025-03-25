@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, gql } from '@apollo/client';
-import { Link, useParams } from 'react-router-dom';
-import { Button, Image } from '@nextui-org/react';
-import estrella from '../assets/estrella (1).png';
-import SideBar from '../components/SideBar';
-import { SearchBar } from '../components/SearchBar';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { useQuery, gql } from "@apollo/client";
+import { Link, useParams } from "react-router-dom";
+import { Button, Image } from "@nextui-org/react";
+import SideBar from "../components/SideBar";
+import { SearchBar } from "../components/SearchBar";
+import { FaBars, FaTimes } from "react-icons/fa";
+import ReviewForm from "../forms/ReviewForm";
 
 const GET_BOOK_DETAILS = gql`
   query Books($id: ID!) {
@@ -24,6 +24,15 @@ const GET_BOOK_DETAILS = gql`
       gender {
         id
         name
+      }
+      reviews {
+        id
+        comment
+        rating
+        user {
+          id
+          name
+        }
       }
     }
   }
@@ -45,15 +54,24 @@ export const BookDetail: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(0);
   const { id } = useParams<{ id: string }>();
+  const userId = localStorage.getItem("userId");
 
-  const { loading: booksLoading, error: booksError, data: booksData } = useQuery(GET_BOOK_DETAILS, {
+  const {
+    loading: booksLoading,
+    error: booksError,
+    data: booksData,
+  } = useQuery(GET_BOOK_DETAILS, {
     variables: { id },
     onCompleted: () => {
       setQuantity(1);
-    }
+    },
   });
 
-  const { loading: reviewsLoading, error: reviewsError, data: reviewsData } = useQuery(GET_ALL_REVIEWS);
+  const {
+    loading: reviewsLoading,
+    error: reviewsError,
+    data: reviewsData,
+  } = useQuery(GET_ALL_REVIEWS);
 
   useEffect(() => {
     if (booksData && booksData.books.length > 0) {
@@ -65,14 +83,14 @@ export const BookDetail: React.FC = () => {
         gender: booksData.books[0].gender,
         quantity,
       };
-      localStorage.setItem('selectedBook', JSON.stringify(selectedBook));
+      localStorage.setItem("selectedBook", JSON.stringify(selectedBook));
       const totalPrice = booksData.books[0].price * quantity;
       setTotal(totalPrice);
     }
   }, [quantity, booksData]);
 
   useEffect(() => {
-    const savedBook = localStorage.getItem('selectedBook');
+    const savedBook = localStorage.getItem("selectedBook");
     if (savedBook) {
       const parsedBook = JSON.parse(savedBook);
       setQuantity(parsedBook.quantity);
@@ -111,9 +129,16 @@ export const BookDetail: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-gray-100 overflow-y-auto">
       <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div className={`flex-grow flex flex-col transition-all duration-300 ${sidebarOpen ? 'ml-60' : 'ml-0'} lg:ml-60`}>
+      <div
+        className={`flex-grow flex flex-col transition-all duration-300 ${
+          sidebarOpen ? "ml-60" : "ml-0"
+        } lg:ml-60`}
+      >
         <header className="bg-white shadow-md flex items-center justify-between p-4 relative ml-4 mr-4 rounded-md z-20">
-          <button className="lg:hidden p-2" onClick={() => setSidebarOpen(!sidebarOpen)}>
+          <button
+            className="lg:hidden p-2"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
             {sidebarOpen ? (
               <FaTimes className="h-6 w-6 text-black" />
             ) : (
@@ -134,14 +159,15 @@ export const BookDetail: React.FC = () => {
                   radius="sm"
                   className="w-full h-full"
                 />
-                <div className='mt-4'>
+                <div className="mt-4">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-6">
-                    <h1 className="text-2xl lg:text-3xl font-bold mb-2">{book.title}</h1>
-
+                    <h1 className="text-2xl lg:text-3xl font-bold mb-2">
+                      {book.title}
+                    </h1>
                   </div>
 
                   <h2 className="text-lg mb-2 font-regular">
-                    by {book.author?.name || 'Autor desconocido'}
+                    by {book.author?.name || "Autor desconocido"}
                   </h2>
 
                   <div className="max-w-md">
@@ -150,18 +176,14 @@ export const BookDetail: React.FC = () => {
                     </p>
                   </div>
                   <div className="flex items-start space-x-1">
-                    <p className="text-md mb-2 font-semibold">
-                      Género:
-                    </p>
+                    <p className="text-md mb-2 font-semibold">Género:</p>
                     <p className="text-md mb-2 font-regular text-gray-600">
                       {book.gender.name}
                     </p>
                   </div>
 
                   <div className="flex items-start space-x-1">
-                    <p className="text-lg mb-2 font-semibold">
-                      Disponibles:
-                    </p>
+                    <p className="text-lg mb-2 font-semibold">Disponibles:</p>
                     <p className="text-lg mb-2 font-regular text-gray-600">
                       {book.quantity} Unidades
                     </p>
@@ -191,9 +213,7 @@ export const BookDetail: React.FC = () => {
                     </Button>
                   </div>
                   <div className="flex items-start space-x-1">
-                    <p className="text-lg mb-2 font-semibold">
-                      Total:
-                    </p>
+                    <p className="text-lg mb-2 font-semibold">Total:</p>
                     <p className="text-lg mb-2 font-regular">
                       ${(total / 100).toFixed(2)}
                     </p>
@@ -219,7 +239,12 @@ export const BookDetail: React.FC = () => {
                         </Link>
                       </Button>
 
-                      <Button color="primary" radius="sm" variant="flat" className="w-full lg:w-auto">
+                      <Button
+                        color="primary"
+                        radius="sm"
+                        variant="flat"
+                        className="w-full lg:w-auto"
+                      >
                         <Link
                           to={`/reservation/${book.id}`}
                           key={`reservation-${book.id}`}
@@ -233,11 +258,22 @@ export const BookDetail: React.FC = () => {
                 </div>
               </div>
             )}
+            <h3>Reviews:</h3>
+            {book.reviews.length === 0 ? (
+              <p>No reviews available for this book.</p>
+            ) : (
+              book.reviews.map((review) => (
+                <div key={review.id}>
+                  <h4>Rating: {review.rating}</h4>
+                  <p>{review.comment}</p>
+                  <p>User: {review.user.name}</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
+      {userId && <ReviewForm bookId={book.id} userId={userId} />}
     </div>
-
-
   );
 };
