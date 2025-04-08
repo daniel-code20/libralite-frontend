@@ -164,7 +164,7 @@ export const BuyPage: React.FC<BuyPageProps> = () => {
               <Button
                 type="submit"
                 radius="sm"
-                className="w-full bg-gradient-to-tr from-blue-500 to-cyan-400 text-white shadow-lg font-bold"
+                className="w-full bg-black text-white font-semibold"
                 style={{ height: '50px' }}
               >
                 Pagar ${ (total / 100).toFixed(2) }

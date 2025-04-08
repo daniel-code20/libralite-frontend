@@ -1,12 +1,10 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Card, CardBody, CardFooter, Divider, Image } from '@nextui-org/react';
-import estrella from '../../assets/estrella (1).png';
+import { Card, CardBody, CardFooter, Image } from '@nextui-org/react';
 import { Genders } from '../../graphql/types';
 import { GET_ALL_GENDERS } from '../../graphql/mutation/queries';
-import AdminEditBookModal from '../../Modal/AdminEditBookModal';
-import DeleteBookButton from '../../graphql/DeleteBookButton';
+import AdminBookModal from '../../Modal/AdminBookModal';
 
 interface Book {
   id: string;
@@ -43,6 +41,7 @@ const AdminBookList: React.FC<BookListProps> = ({ books, getRatingForBook }) => 
       <div className="px-4 w-full">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-black mt-4">Libros</h1>
+          <AdminBookModal selectedGenre={gender.id} />
         </div>
         {books.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -62,10 +61,10 @@ const AdminBookList: React.FC<BookListProps> = ({ books, getRatingForBook }) => 
                       <h4 className="font-bold text-base text-black mb-1">
                         {book.title}
                       </h4>
-                      <h5 className="text-xs font-regular text-gray-600 mb-1">
+                      <h5 className="text-xs font-semibold text-gray-600 mb-1">
                         {book.author?.name || 'Autor desconocido'}
                       </h5>
-                      <p className="text-xs font-regular text-gray-600 line-clamp-2 mb-1">
+                      <p className="text-xs font-regular text-gray-500 line-clamp-2 mb-1">
                         {book.description}
                       </p>
                       <small className="text-sm font-bold text-black">

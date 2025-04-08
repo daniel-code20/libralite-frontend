@@ -17,7 +17,7 @@ const SideBar: React.FC<{ sidebarOpen: boolean; setSidebarOpen: (open: boolean) 
   const isActive = (path: string): boolean => location.pathname === path;
 
   return (
-    <aside className={`fixed top-0 left-0 h-full w-60 bg-white shadow-xl z-20 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:w-60`}>
+    <aside className={`fixed top-0 left-0 h-full w-60 bg-white shadow-xl z-30 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:w-60`}>
       <div className="h-full flex flex-col justify-between px-6 py-4">
         <div>
           <div className="flex items-center">

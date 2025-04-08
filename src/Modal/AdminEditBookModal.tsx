@@ -194,9 +194,9 @@ const AdminEditBookModal: React.FC<AdminEditBookModalProps> = ({ bookId, selecte
       <Button
         color="primary"
         radius="sm"
-        variant="shadow"
+        variant="flat"
         onClick={onOpen}
-        className="w-full lg:w-auto"
+        className="w-full lg:w-auto font-medium"
       >
         Actualizar
       </Button>
@@ -292,12 +292,12 @@ const AdminEditBookModal: React.FC<AdminEditBookModalProps> = ({ bookId, selecte
                     type="submit"
                     color="primary"
                     radius="sm"
-                    variant="shadow"
-                    className="mr-4 mt-4 mb-4"
+                    variant="flat"
+                    className="mr-4 mt-4 mb-4 font-medium"
                   >
                     Actualizar
                   </Button>
-                  <Button color="danger" variant="flat" radius="sm" onClick={onClose}>
+                  <Button color="danger" variant="light" radius="sm" onClick={onClose}>
                     Cancelar
                   </Button>
                 </form>

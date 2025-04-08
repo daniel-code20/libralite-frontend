@@ -122,78 +122,72 @@ export const AdminBookDetail = () => {
 
   return (
     <>
-      <div className="flex min-h-screen bg-gray-100 overflow-y-auto">
-        <AdminSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        <div className={`flex-grow flex flex-col transition-all duration-300 ${sidebarOpen ? 'ml-60' : 'ml-0'} lg:ml-60`}>
-          <header className="bg-white shadow-md flex items-center justify-between p-4 relative ml-4 mr-4 rounded-md z-20">
-            <button className="lg:hidden p-2" onClick={() => setSidebarOpen(!sidebarOpen)}>
-              {sidebarOpen ? (
-                <FaTimes className="h-6 w-6 text-black" />
-              ) : (
-                <FaBars className="h-6 w-6 text-black" />
-              )}
-            </button>
-            <AdminSearchBar />
-          </header>
-          <div className="flex-grow flex flex-col p-4 lg:p-8">
-            <div className="flex flex-col lg:flex-row lg:space-x-6 max-w-6xl mx-auto">
-              {book && (
-                <div className="flex flex-col lg:flex-row lg:items-start lg:space-x-6 ">
-                  <Image
-                    src={book.image.url}
-                    alt={book.title}
-                    width={300}
-                    height={200}
-                    radius="sm"
-                  />
-                  <div>
-                    <div className="flex items-center space-x-6">
-                      <h1 className="text-3xl font-bold mb-2 mt-4 ">{book.title}</h1>
-                  
-                    </div>
-                    <h2 className="text-l mb-2  font-regular ">
-                      by {book.author?.name || 'Autor desconocido'}
-                    </h2>
-                    <div className="max-w-md">
-                      <p className="text-md mb-2 font-regular text-gray-600">
-                        {book.description}
-                      </p>
-                    </div>
-                    <div className="flex items-start space-x-1">
-                      <p className="text-md mb-4  font-semibold ">
-                        Género:
-                      </p>
-                      <p className="text-md mb-4 font-regular text-gray-600">
-                        {gender.name}
-                      </p>
-                    </div>
-                    <div className="flex items-start space-x-1">
-                      <p className="text-lg mb-4 font-semibold">
-                        Disponibles:
-                      </p>
-                      <p className="text-lg mb-4 font-regular text-gray-600">
-                        {book.quantity} Unidades
-                      </p>
-                    </div>
-                    <div className="flex items-start space-x-1">
-                      <p className="text-lg mb-4  font-semibold">
-                        Precio:
-                      </p>
-                      <p className="text-lg mb-4 font-regular text-gray-600">
-                      ${(book.price / 100).toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="flex space-x-4"> 
-                      <AdminEditBookModal selectedGenre={gender.id} bookId={book.id} />
-                      <DeleteBookButton BookId={book.id} />
-                    </div>
-                  </div>
-                </div>
-              )}
+      <div className="flex min-h-screen bg-white overflow-y-auto">
+  <AdminSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+  <div
+    className={`flex-grow flex flex-col transition-all duration-300 ${sidebarOpen ? "ml-60" : "ml-0"} lg:ml-60`}
+  >
+    <header className="bg-white shadow-md flex items-center justify-between p-4 relative z-20">
+      <button className="lg:hidden p-2" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        {sidebarOpen ? (
+          <FaTimes className="h-6 w-6 text-black" />
+        ) : (
+          <FaBars className="h-6 w-6 text-black" />
+        )}
+      </button>
+      <AdminSearchBar />
+    </header>
+
+    <div className="flex-grow flex flex-col p-4 lg:p-8">
+      <div className="max-w-6xl mx-auto p-6 lg:grid lg:grid-cols-3 lg:gap-8">
+        {book && (
+          <>
+            {/* Imagen del libro */}
+            <div className="w-full lg:w-auto flex flex-col justify-between">
+              <Image
+                src={book.image.url}
+                alt={book.title}
+                width={400}
+                height={500}
+                className="w-full h-auto rounded-sm object-cover shadow-lg mb-4"
+              />
             </div>
-          </div>
-        </div>
+
+            {/* Información del libro */}
+            <div className="lg:col-span-2">
+              <h1 className="text-3xl font-bold mb-2">{book.title}</h1>
+              <h2 className="text-lg mb-4 text-gray-600">
+                by {book.author?.name || "Autor desconocido"}
+              </h2>
+              <p className="text-md text-gray-700 mb-4">{book.description}</p>
+
+              <div className="flex flex-wrap gap-4 mb-4">
+                <p className="text-md font-semibold">Género:</p>
+                <p className="text-md text-gray-600">{gender.name}</p>
+              </div>
+
+              <div className="flex flex-wrap gap-4 mb-4">
+                <p className="text-lg font-semibold">Disponibles:</p>
+                <p className="text-lg text-gray-600">{book.quantity} Unidades</p>
+              </div>
+
+              <div className="flex flex-wrap gap-4 mb-4">
+                <p className="text-lg font-semibold">Precio:</p>
+                <p className="text-lg text-gray-600">${(book.price / 100).toFixed(2)}</p>
+              </div>
+
+              <div className="flex space-x-4 mt-4">
+                <AdminEditBookModal selectedGenre={gender.id} bookId={book.id} />
+                <DeleteBookButton BookId={book.id} />
+              </div>
+            </div>
+          </>
+        )}
       </div>
+    </div>
+  </div>
+</div>
+
     </>
   );
 };

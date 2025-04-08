@@ -54,7 +54,7 @@ const DeleteBookButton: React.FC<DeleteBookButtonProps> = ({ BookId }) => {
       color="danger"
       className="ml-4 w-full lg:w-auto"
       radius="sm"
-      variant="flat"
+      variant="light"
       onClick={handleDelete}
       
     >

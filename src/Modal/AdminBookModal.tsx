@@ -209,10 +209,9 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
       <Button
         color="primary"
         radius="sm"
-        variant="shadow"
+        variant="flat"
         onClick={onOpen}
-        style={{ marginBottom: '20px' }}
-        className='text-white font-semibold'
+        className='font-semibold mt-4'
       >
         Agregar Libro
       </Button>
@@ -308,12 +307,12 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
                     type="submit"
                     color="primary"
                     radius="sm"
-                    variant="shadow"
-                    className="mr-4 mt-4 mb-4"
+                    variant="flat"
+                    className="mr-4 mt-4 mb-4 font-medium"
                   >
                     Agregar
                   </Button>
-                  <Button color="danger" variant="flat" radius="sm" onClick={onClose}>
+                  <Button color="danger" variant="light" radius="sm" onClick={onClose}>
                     Cancelar
                   </Button>
                 </form>

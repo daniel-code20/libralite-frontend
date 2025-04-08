@@ -61,7 +61,7 @@ export const ReservationList: React.FC = () => {
         <div className="flex min-h-screen bg-gray-100 overflow-y-auto">
             <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
             <div className={`flex-grow flex flex-col transition-all duration-300 ${sidebarOpen ? 'ml-60' : 'ml-0'} lg:ml-60`}>
-            <header className="bg-white shadow-md flex items-center p-4 ml-4 mr-4">
+            <header className="bg-white shadow-md flex items-center p-4 z-10">
                     {/* Botón de hamburguesa para móviles */}
                     <button
                         className="lg:hidden p-2 text-black"
