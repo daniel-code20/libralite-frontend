@@ -1,10 +1,8 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { Link, useParams } from 'react-router-dom';
-import { Card, CardBody, CardFooter, Image } from '@nextui-org/react';
-import { Genders } from '../../graphql/types';
-import { GET_ALL_GENDERS } from '../../graphql/mutation/queries';
-import AdminBookModal from '../../Modal/AdminBookModal';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import AdminBookModal from "../../Modal/AdminBookModal";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 interface Book {
   id: string;
@@ -12,76 +10,104 @@ interface Book {
   author: { name: string };
   image: { url: string };
   price: number;
-  gender: { id: string, name: string }
+  gender: { id: string; name: string };
   description: string;
+}
+
+interface Gender {
+  id: string;
+  name: string;
+  image: { url: string };
+  books: Book[];
 }
 
 interface BookListProps {
   books: Book[];
   getRatingForBook: (bookId: string) => number | null;
+  gender: Gender;
 }
 
-const AdminBookList: React.FC<BookListProps> = ({ books, getRatingForBook }) => {
-  const { id } = useParams<{ id: string }>();
-  const { loading, error, data } = useQuery(GET_ALL_GENDERS, {
-    variables: { id },
-  });
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  if (!data || !data.genders || data.genders.length === 0) {
-    return <p>No data available for this gender.</p>;
-  }
-
-  const gender: Genders = data.genders[0];
+const AdminBookList: React.FC<BookListProps> = ({ books, gender, getRatingForBook }) => {
+  // Función para renderizar estrellas según el rating
+  const renderStars = (rating: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (rating >= i) {
+        stars.push(<FaStar key={i} className="text-yellow-400" />);
+      } else if (rating >= i - 0.5) {
+        stars.push(<FaStarHalfAlt key={i} className="text-yellow-400" />);
+      } else {
+        stars.push(<FaRegStar key={i} className="text-yellow-400" />);
+      }
+    }
+    return <div className="flex items-center">{stars}</div>;
+  };
 
   return (
     <div className="flex flex-col items-start justify-start animate__animated animate__fadeIn shadow-md bg-white rounded-md w-full overflow-hidden">
       <div className="px-4 w-full">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-black mt-4">Libros</h1>
-          <AdminBookModal selectedGenre={gender.id} />
+        <div className="mb-6">
+          {/* Agrupamos el título y el botón en un flex */}
+          <div className="flex items-center justify-between mt-4">
+            <h1 className="text-2xl font-semibold text-gray-900">
+              {gender.name}
+            </h1>
+            <AdminBookModal selectedGenre={gender.id} />
+          </div>
         </div>
+
         {books.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {books.map((book) => (
-              <Link key={book.id} to={`/admin-book/${book.id}`}>
-                <Card className="w-full max-w-[340px] mx-auto bg-white mb-6 shadow-xl flex flex-col lg:flex-row" radius="sm">
-                  <CardBody className="flex justify-center items-center lg:w-1/3 lg:items-start lg:pr-4">
-                    <Image
-                      className="object-cover w-full h-40"
-                      radius="md"
-                      alt={book.title}
-                      src={book.image.url}
-                    />
-                  </CardBody>
-                  <CardFooter className="p-4 lg:w-2/3 flex flex-col">
-                    <div className="flex flex-col mb-2">
-                      <h4 className="font-bold text-base text-black mb-1">
-                        {book.title}
-                      </h4>
-                      <h5 className="text-xs font-semibold text-gray-600 mb-1">
-                        {book.author?.name || 'Autor desconocido'}
-                      </h5>
-                      <p className="text-xs font-regular text-gray-500 line-clamp-2 mb-1">
-                        {book.description}
-                      </p>
-                      <small className="text-sm font-bold text-black">
-                        ${(book.price / 100).toFixed(2)}
-                      </small>
-                    </div>
-                  </CardFooter>
-                </Card>
-              </Link>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-y-4 gap-x-2 mb-8">
+            {books.map((book) => {
+              const rating = getRatingForBook(book.id); // Obtener el rating del libro
+              const averageRating = rating || 0; // Si no hay rating, poner 0
+
+              return (
+                <Link key={book.id} to={`/admin-book/${book.id}`}>
+                  <Card
+                    className="w-full bg-white shadow-md flex flex-col lg:flex-row transition duration-200 ease-in-out hover:shadow-lg hover:scale-[1.02] cursor-pointer"
+                    radius="sm"
+                  >
+                    <CardBody className="flex justify-center items-center lg:w-1/3 p-3">
+                      <Image
+                        className="object-cover w-full h-40"
+                        radius="none"
+                        alt={book.title}
+                        src={book.image.url}
+                      />
+                    </CardBody>
+                    <CardFooter className="px-3 py-2 lg:w-2/3 flex flex-col">
+                      <div className="flex flex-col gap-1">
+                        <h4 className="font-bold text-sm text-black">
+                          {book.title}
+                        </h4>
+                        <h5 className="text-xs font-semibold text-gray-600">
+                          {book.author?.name || "Autor desconocido"}
+                        </h5>
+                        {/* Mostrar las estrellas del rating */}
+                        <div className="flex items-center gap-2">
+                          {renderStars(averageRating)}
+                        </div>
+                        <p className="text-xs text-gray-500 line-clamp-4">
+                          {book.description}
+                        </p>
+                        <small className="text-sm font-bold text-black">
+                          ${(book.price / 100).toFixed(2)}
+                        </small>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         ) : (
-          <p className="text-center text-lg text-gray-400 mt-8">No hay libros disponibles en este género.</p>
+          <p className="text-center text-lg text-gray-400 mt-8 mb-8">
+            No hay libros disponibles en este género.
+          </p>
         )}
       </div>
     </div>
-
   );
 };
 

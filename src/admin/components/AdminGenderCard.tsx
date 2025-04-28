@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -9,7 +8,7 @@ import {
 } from '@nextui-org/react';
 import { useQuery, gql } from '@apollo/client';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React from 'react';
 import AdminCategoryModal from '../../Modal/AdminCategoryModal';
 import DeleteGenderButton from '../../graphql/DeleteGenderButton';
 import EditGenderButton from '../../graphql/EditGenderButton';

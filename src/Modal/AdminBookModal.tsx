@@ -6,11 +6,12 @@ import {
   Button,
   Input,
   useDisclosure,
-} from '@nextui-org/react';
-import { useState, useRef } from 'react';
-import React from 'react';
-import { gql, useApolloClient } from '@apollo/client';
-import Swal from 'sweetalert2';
+} from "@nextui-org/react";
+import { useState, useRef } from "react";
+import React from "react";
+import { gql, useApolloClient } from "@apollo/client";
+import Swal from "sweetalert2";
+import { GoPlus } from "react-icons/go";
 
 const CREATE_BOOK_MUTATION = gql`
   mutation CreateBook($data: BookCreateInput!) {
@@ -69,13 +70,13 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedImage, setSelectedImage] = useState<FileList | null>(null);
   const [bookData, setBookData] = useState({
-    title: '',
-    description: '',
-    edition: '',
-    author: '',
-    quantity: '',
-    price: '0.00',
-    gender: '',
+    title: "",
+    description: "",
+    edition: "",
+    author: "",
+    quantity: "",
+    price: "0.00",
+    gender: "",
   });
   const client = useApolloClient();
   const formRef = useRef<HTMLFormElement>(null);
@@ -100,7 +101,7 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
     e.preventDefault();
 
     if (!selectedImage || selectedImage.length === 0) {
-      alert('Por favor selecciona una imagen');
+      alert("Por favor selecciona una imagen");
       return;
     }
 
@@ -112,16 +113,16 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
       const { data: existingBookData } = await client.query({
         query: CHECK_BOOK_TITLE_QUERY,
         variables: { title: bookData.title },
-        fetchPolicy: 'no-cache',
+        fetchPolicy: "no-cache",
       });
 
       if (existingBookData.books.length > 0) {
         // Si el título ya existe, muestra una alerta
         Swal.fire({
-          title: 'Título Duplicado',
-          text: 'El título del libro ya existe. Por favor, elige otro título.',
-          icon: 'warning',
-          confirmButtonText: 'Ok',
+          title: "Título Duplicado",
+          text: "El título del libro ya existe. Por favor, elige otro título.",
+          icon: "warning",
+          confirmButtonText: "Ok",
         });
         return;
       }
@@ -130,7 +131,7 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
       const { data: existingAuthorData } = await client.query({
         query: GET_AUTHOR_BY_NAME_QUERY,
         variables: { name: bookData.author },
-        fetchPolicy: 'no-cache',
+        fetchPolicy: "no-cache",
       });
 
       let authorId;
@@ -153,9 +154,9 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
         mutation: CREATE_BOOK_MUTATION,
         context: {
           headers: {
-            'content-type': 'multipart/form-data',
-            'x-apollo-operation-name': 'CreateBookMutation',
-            'apollo-require-preflight': true,
+            "content-type": "multipart/form-data",
+            "x-apollo-operation-name": "CreateBookMutation",
+            "apollo-require-preflight": true,
           },
         },
         variables: {
@@ -173,10 +174,10 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
       });
 
       Swal.fire({
-        title: '¡Excelente!',
-        text: 'Libro creado exitosamente',
-        icon: 'success',
-        confirmButtonText: 'Ok',
+        title: "¡Excelente!",
+        text: "Libro creado exitosamente",
+        icon: "success",
+        confirmButtonText: "Ok",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -184,22 +185,22 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
       });
 
       setBookData({
-        title: '',
-        description: '',
-        edition: '',
-        author: '',
-        quantity: '',
-        price: '0.00',
+        title: "",
+        description: "",
+        edition: "",
+        author: "",
+        quantity: "",
+        price: "0.00",
         gender: selectedGenre,
       });
       setSelectedImage(null);
       formRef.current?.reset();
     } catch (error) {
-      console.error('Error al crear el libro:', error);
+      console.error("Error al crear el libro:", error);
       Swal.fire({
-        title: 'Error',
-        text: 'Error al crear el libro',
-        icon: 'error',
+        title: "Error",
+        text: "Error al crear el libro",
+        icon: "error",
       });
     }
   };
@@ -209,10 +210,11 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
       <Button
         color="primary"
         radius="sm"
-        variant="flat"
+        variant="solid"
         onClick={onOpen}
-        className='font-semibold mt-4'
+        className="font-normal mt-4 flex items-center gap-2"
       >
+        <GoPlus size={25}/>
         Agregar Libro
       </Button>
 
@@ -220,7 +222,9 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Agregar Libro</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Agregar Libro
+              </ModalHeader>
               <ModalBody>
                 <form onSubmit={handleSubmit} ref={formRef}>
                   <div>
@@ -312,7 +316,12 @@ const AdminBookModal: React.FC<AdminBookModalProps> = ({ selectedGenre }) => {
                   >
                     Agregar
                   </Button>
-                  <Button color="danger" variant="light" radius="sm" onClick={onClose}>
+                  <Button
+                    color="danger"
+                    variant="light"
+                    radius="sm"
+                    onClick={onClose}
+                  >
                     Cancelar
                   </Button>
                 </form>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ActiveSlider, CategoryCard, SearchBar } from '../components';
+import { ActiveSlider, SearchBar } from '../components';
 import SideBar from '../components/SideBar';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { AllCategories} from '../components/AllCategories';
 
 export const PrincipalPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -20,11 +21,11 @@ export const PrincipalPage = () => {
           </button>
           <SearchBar />
         </header>
-        <main className="flex-grow p-4 overflow-x-auto"> {/* Cambiado overflow-y-auto a overflow-x-auto */}
-          <div className="w-full"> {/* Asegura que el slider tenga ancho completo */}
-            <ActiveSlider />
+        <main className="p-4">
+          <div > 
+            {/* <ActiveSlider /> */}
           </div>
-          <CategoryCard />
+          <AllCategories/>
         </main>
       </div>
     </div>

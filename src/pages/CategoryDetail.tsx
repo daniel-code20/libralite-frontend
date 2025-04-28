@@ -1,5 +1,5 @@
 import { useQuery, gql } from '@apollo/client';
-import { CircularProgress, Button } from '@nextui-org/react';
+import { CircularProgress} from '@nextui-org/react';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import BookList from '../components/BookList';
@@ -103,7 +103,6 @@ export const CategoryDetail: React.FC = () => {
               <FaBars className="h-6 w-6 text-black" />
             )}
           </button>
-          <h1 className="text-3xl font-bold mb-4 text-black">{category.name}</h1>
           <SearchBar />
         </header>
         <main className="flex-grow bg-gray-100 p-4 lg:p-8">

@@ -3,7 +3,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Button,
   Input,
   useDisclosure,
@@ -12,6 +11,7 @@ import { useState, useRef } from 'react';
 import React from 'react';
 import { gql, useApolloClient } from '@apollo/client';
 import Swal from 'sweetalert2';
+import { GoPlus } from "react-icons/go";
 
 const CREATE_GENDER_MUTATION = gql`
   mutation CreateGender($data: GenderCreateInput!) {
@@ -95,11 +95,12 @@ const AdminCategoryModal = () => {
   return (
     <>
       <Button
-        color="primary" radius="sm" variant="flat"
+        color="primary" radius="sm" variant="solid"
         onClick={onOpen}
-        className='mt-4 font-medium'
+        className='font-normal'
       >
-        Agregar Género
+        <GoPlus size={25}/>
+        Agregar Categoría
       </Button>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

@@ -16,6 +16,8 @@ import { BuysList } from '../components/BuysList';
 import { ReservationList } from '../components/ReservationList';
 import { AdminBuysList } from '../admin/components/AdminBuysList';
 import { AdminReservationList } from '../admin/components/AdminReservationList';
+import CategoriesTable from '../admin/components/CategoriesTable';
+import { AdminSucursal } from '../admin/components/AdminSucursal';
 
 
 
@@ -38,6 +40,8 @@ export const AppRouter = () => {
         <Route path="/admin-buyslist" element={<AdminBuysList />} />
         <Route path="/reservationlist" element={<ReservationList />} />
         <Route path="/admin-reservationlist" element={<AdminReservationList />} />
+        <Route path="/admin-categories" element={<CategoriesTable />} />
+        <Route path="/admin-sucursal" element={<AdminSucursal />} />
       </Routes>
     </>
   );

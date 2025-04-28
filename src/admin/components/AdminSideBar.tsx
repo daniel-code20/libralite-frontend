@@ -3,9 +3,9 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { logoutUser } from '../../auth/authUser';
 import logoImg from '../../assets/Logo1.png';
 import { Button } from '@nextui-org/button';
-import { FaHome, FaShoppingCart, FaCalendarAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaShoppingCart, FaCalendarAlt, FaSignOutAlt, FaTags, FaShoppingBag } from 'react-icons/fa';
 
-const AdminSideBar: React.FC<{ sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void }> = ({ sidebarOpen, setSidebarOpen }) => {
+const AdminSideBar: React.FC<{ sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void }> = ({ sidebarOpen}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,7 +23,7 @@ const AdminSideBar: React.FC<{ sidebarOpen: boolean; setSidebarOpen: (open: bool
           <div className="flex items-center">
             <img src={logoImg} alt="Logo" className="h-8" />
             <h1 className="font-bold bg-gradient-to-tr from-blue-500 to-cyan-400 text-transparent bg-clip-text ml-2">
-              LibraLite
+              BookFlow
             </h1>
           </div>
           <nav className="flex flex-col space-y-4 mt-10">
@@ -43,6 +43,18 @@ const AdminSideBar: React.FC<{ sidebarOpen: boolean; setSidebarOpen: (open: bool
               <FaCalendarAlt className={`mr-3 ${isActive('/admin-reservationlist') ? 'text-blue-500' : 'text-gray-500'}`} />
               <h1 className={`text-black ${isActive('/admin-reservationlist') ? 'font-semibold text-blue-500' : ''}`}>
                 Reservaciones
+              </h1>
+            </Link>
+            <Link to={'/admin-categories'} className={`flex items-center p-2 rounded-md ${isActive('/admin-categories') ? 'bg-blue-100' : ''}`}>
+              <FaTags className={`mr-3 ${isActive('/admin-categories') ? 'text-blue-500' : 'text-gray-500'}`} />
+              <h1 className={`text-black ${isActive('/admin-categories') ? 'font-semibold text-blue-500' : ''}`}>
+                Categorías
+              </h1>
+            </Link>
+            <Link to={'/admin-sucursal'} className={`flex items-center p-2 rounded-md ${isActive('/admin-sucursal') ? 'bg-blue-100' : ''}`}>
+              <FaShoppingBag className={`mr-3 ${isActive('/admin-sucursal') ? 'text-blue-500' : 'text-gray-500'}`} />
+              <h1 className={`text-black ${isActive('/admin-sucursal') ? 'font-semibold text-blue-500' : ''}`}>
+                Sucursales
               </h1>
             </Link>
           </nav>

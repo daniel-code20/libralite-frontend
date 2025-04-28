@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Button, Image } from "@nextui-org/react";
 import SideBar from "../components/SideBar";
 import { SearchBar } from "../components/SearchBar";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import ReviewForm from "../forms/ReviewForm";
 import { Review } from "../components/Review";
 
@@ -22,6 +22,7 @@ const GET_BOOK_DETAILS = gql`
       price
       quantity
       description
+      edition
       gender {
         id
         name
@@ -105,14 +106,6 @@ export const BookDetail: React.FC = () => {
 
   const book = booksData.books[0];
 
-  const getRatingForBook = () => {
-    const review = reviewsData.reviews.find(
-      (review: { rating: number; book: { id: string } }) =>
-        review.book.id === book.id
-    );
-    return review ? review.rating : null;
-  };
-
   const incrementQuantity = () => {
     if (quantity < book.quantity) {
       setQuantity((prevQuantity) => prevQuantity + 1);
@@ -126,6 +119,26 @@ export const BookDetail: React.FC = () => {
   };
 
   const isOutOfStock = book.quantity === 0;
+
+  // Función para renderizar estrellas
+  const renderStars = (rating: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (rating >= i) {
+        stars.push(<FaStar key={i} className="text-yellow-400" />);
+      } else if (rating >= i - 0.5) {
+        stars.push(<FaStarHalfAlt key={i} className="text-yellow-400" />);
+      } else {
+        stars.push(<FaRegStar key={i} className="text-yellow-400" />);
+      }
+    }
+    return <div className="flex items-center">{stars}</div>;
+  };
+
+  // Calcular el rating promedio
+  const averageRating = book.reviews.length
+  ? book.reviews.reduce((sum: number, review: { rating: number }) => sum + review.rating, 0)
+  : 0;
 
   return (
     <div className="flex min-h-screen bg-white overflow-y-auto">
@@ -167,9 +180,18 @@ export const BookDetail: React.FC = () => {
                 {/* Información del libro */}
                 <div className="lg:col-span-2">
                   <h1 className="text-3xl font-bold mb-2">{book.title}</h1>
-                  <h2 className="text-lg mb-4 text-gray-600">
+                  <h2 className="text-lg mb-2 text-gray-600">
                     by {book.author?.name || "Autor desconocido"}
                   </h2>
+
+                  {/* Mostrar estrellas */}
+                  <div className="flex items-center gap-2 mb-4">
+                    {renderStars(averageRating)}
+                    <span className="text-gray-500 text-sm">
+                      ({book.reviews.length} reseñas)
+                    </span>
+                  </div>
+
                   <p className="text-md text-gray-700 mb-4">
                     {book.description}
                   </p>
@@ -177,6 +199,11 @@ export const BookDetail: React.FC = () => {
                   <div className="flex flex-wrap gap-4 mb-4">
                     <p className="text-md font-semibold">Género:</p>
                     <p className="text-md text-gray-600">{book.gender.name}</p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-4 mb-4">
+                    <p className="text-md font-semibold">Edición:</p>
+                    <p className="text-md text-gray-600">{book.edition}</p>
                   </div>
 
                   <div className="flex flex-wrap gap-4 mb-4">
@@ -253,9 +280,11 @@ export const BookDetail: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="w-full lg:col-span-3 flex flex-col space-y-6 p-6">
+
+                {/* Sección de reviews */}
+                <div className="w-full lg:col-span-3 flex flex-col space-y-6 ">
                   {userId && <ReviewForm bookId={book.id} userId={userId} />}
-                  <Review bookId={book.id} />
+                  <Review bookId={book.id} userId={userId} isAdmin={false} />
                 </div>
               </>
             )}

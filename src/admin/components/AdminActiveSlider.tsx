@@ -11,6 +11,7 @@ interface Book {
   image: { id: string; url: string };
   price: number;
   quantity: number;
+  reviews: { rating: number }[];
 }
 
 const GET_ALL_BOOKS = gql`
@@ -25,6 +26,9 @@ const GET_ALL_BOOKS = gql`
       }
       image {
         url
+      }
+      reviews {
+        rating
       }
     }
   }
@@ -45,28 +49,68 @@ export const AdminActiveSlider = () => {
   );
 
   return (
-    <div className="flex items-start justify-center mb-8 animate__animated animate__fadeIn shadow-md bg-white rounded-md overflow-hidden max-w-full">
-      <div className="w-full px-4">
-        <h2 className="text-2xl font-bold mb-4 text-black mt-4">Populares</h2>
-        <div className="relative">
-          <div ref={sliderRef} className="flex overflow-x-scroll space-x-4 scrollbar-hide py-4 w-full">
-            {filteredBooks.map((book: Book) => (
-              <div key={book.id} className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
-                <Link to={`/admin-book/${book.id}`} className="block w-full h-full">
-                  <div className="flex flex-col items-center mb-4">
-                    <img
-                      className="w-full object-cover shadow-lg"
-                      alt={book.title}
-                      src={book.image.url}
-                      style={{ width: '150px', height: '200px' }}
-                    />
-                  </div>
-                </Link>
+    <div className="flex items-start justify-start mb-6 animate__animated animate__fadeIn shadow-md bg-white rounded-md overflow-hidden max-w-full">
+          <div className="w-full px-4">
+            <h2 className="text-2xl font-bold mb-3 text-black mt-4">Populares</h2>
+            <div className="relative">
+              <div
+                ref={sliderRef}
+                className="flex overflow-x-scroll space-x-2 scrollbar-hide py-3 w-full"
+              >
+                {filteredBooks.map((book: Book) => {
+                  const averageRating =
+                    book.reviews.length > 0
+                      ? book.reviews.reduce(
+                          (sum, review) => sum + review.rating,
+                          0
+                        ) / book.reviews.length
+                      : 0;
+    
+                  return (
+                    <div key={book.id} className="flex-shrink-0 w-[160px]">
+                      <Link to={`/admin-book/${book.id}`} className="block w-full h-full">
+                        <div className="flex flex-col items-start gap-1 mb-2">
+                          <img
+                            className="w-full object-cover shadow-md "
+                            alt={book.title}
+                            src={book.image.url}
+                            style={{ width: "100%", height: "200px" }}
+                          />
+                          <h3 className="text-base font-semibold text-left text-black">
+                            {book.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 text-left">
+                            {book.author.name}
+                          </p>
+                          <div className="flex justify-start">
+                            {[...Array(5)].map((_, index) => (
+                              <svg
+                                key={index}
+                                className={`w-4 h-4 ${
+                                  index < Math.round(averageRating)
+                                    ? "text-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 15l-3.5 2 1-4.5L2 7h4.5L10 2l2.5 5.5H17l-5.5 5.5 1 4.5L10 15z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            ))}
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
               </div>
-            ))}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
   );
 };

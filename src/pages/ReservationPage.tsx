@@ -192,7 +192,7 @@ export const ReservationPage: React.FC<ReservationPageProps> = () => {
                 <Button
                   type="submit"
                   radius="sm"
-                  className="w-full bg-gradient-to-tr from-blue-500 to-cyan-400 text-white shadow-lg"
+                  className="w-full bg-black text-white font-semibold"
                   style={{ height: '50px' }}
                 >
                   Reservar ${(total / 100).toFixed(2)}

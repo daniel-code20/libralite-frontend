@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-
 import AdminSideBar from '../components/AdminSideBar';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { AdminSearchBar } from '../components/AdminSearchBar';
-import { AdminActiveSlider } from '../components/AdminActiveSlider';
-import { AdminGenderCard } from '../components/AdminGenderCard';
+import { AllCategoriesAdmin } from '../components/AllCategoriesAdmin';
 
 export const AdminPrincipalPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -24,8 +22,7 @@ export const AdminPrincipalPage = () => {
           <AdminSearchBar />
         </header>
         <main className="flex-grow p-4 overflow-y-auto">
-          <AdminActiveSlider />
-          <AdminGenderCard />
+          <AllCategoriesAdmin/>
         </main>
       </div>
     </div>

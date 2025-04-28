@@ -23,7 +23,7 @@ const SideBar: React.FC<{ sidebarOpen: boolean; setSidebarOpen: (open: boolean) 
           <div className="flex items-center">
             <img src={logoImg} alt="Logo" className="h-8" />
             <h1 className="font-bold bg-gradient-to-tr from-blue-500 to-cyan-400 text-transparent bg-clip-text ml-2">
-              LibraLite
+              BookFlow
             </h1>
           </div>
           <nav className="flex flex-col space-y-4 mt-10">

@@ -4,6 +4,7 @@ import Form, { FormItem, FormValidations } from "reactivity-hook-form";
 import { useMutation } from "@apollo/client";
 import Swal from "sweetalert2";
 import { ADD_REVIEW } from "../graphql/mutation/reviewMutation";
+import { FaStar, FaRegStar } from "react-icons/fa"; // Importamos los íconos de estrellas
 
 interface ReviewFormProps {
   bookId: string;
@@ -11,7 +12,7 @@ interface ReviewFormProps {
 }
 
 export type ReviewFormValues = {
-  rating: string; // Convertimos el número a string
+  rating: string;
   comment: string;
 };
 
@@ -31,7 +32,7 @@ const StarRating: React.FC<{
   const stars = [1, 2, 3, 4, 5];
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1 mb-4">
       {stars.map((star) => (
         <button
           key={star}
@@ -39,14 +40,11 @@ const StarRating: React.FC<{
           onClick={() => onChange(star)}
           className="focus:outline-none"
         >
-          <svg
-            className={`w-8 h-8 transition-colors duration-200 ${
-              star <= value ? "text-yellow-400 fill-current" : "text-gray-300 fill-current"
-            }`}
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-          </svg>
+          {star <= value ? (
+            <FaStar className="w-8 h-8 text-yellow-400" /> // Estrella llena
+          ) : (
+            <FaRegStar className="w-8 h-8 text-gray-300" /> // Estrella vacía
+          )}
         </button>
       ))}
     </div>
@@ -56,13 +54,27 @@ const StarRating: React.FC<{
 const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, userId }) => {
   const [rating, setRating] = useState<number>(0);
   const [addReview, { loading, error }] = useMutation(ADD_REVIEW);
+  const [comment, setComment] = useState<string>("");
 
   const handleSubmit = async (data: ReviewFormValues) => {
+    console.log("Datos enviados:", data);
+    console.log("Rating seleccionado:", rating);
+
+    if (rating === 0) {
+      Swal.fire({
+        title: "Error",
+        text: "Debes seleccionar una calificación antes de enviar.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
     try {
-      await addReview({
+      const response = await addReview({
         variables: {
           data: {
-            rating: rating.toString(), // Convertimos el número a string
+            rating: rating,
             comment: data.comment,
             book: { connect: { id: bookId } },
             user: { connect: { id: userId } },
@@ -70,6 +82,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, userId }) => {
         },
       });
 
+      console.log("Respuesta del servidor:", response);
       Swal.fire({
         title: "¡Reseña enviada!",
         text: "Tu opinión ha sido registrada con éxito.",
@@ -77,7 +90,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, userId }) => {
         confirmButtonText: "OK",
       });
 
-      setRating(0); // Reiniciar el rating después de enviar
+      setComment("");
+      setRating(0);
     } catch (err) {
       console.error("Error al enviar la reseña:", err);
       Swal.fire({
@@ -91,30 +105,32 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ bookId, userId }) => {
 
   return (
     <Form onSubmit={handleSubmit} validations={validations} className="w-full">
-      <h2 className="text-xl font-bold text-black mb-4">Deja tu reseña</h2>
+      <h2 className="text-xl font-bold text-black mt-4">Deja tu reseña</h2>
 
       <FormItem name="comment">
         <Textarea
           label="Comentario"
+          value={comment} // Vinculamos el valor del textarea al estado `comment`
+          onChange={(e) => setComment(e.target.value)} // Actualizamos el estado con el comentario
           placeholder="Escribe tu opinión sobre el libro..."
-          className="w-full min-h-32 resize-y rounded text-black"
+          className="w-full min-h-24 resize-y rounded text-black"
           required
           variant="bordered"
           radius="sm"
         />
       </FormItem>
 
-      <div className="flex items-center justify-between mb-4">
-        {/* Estrellas alineadas a la izquierda */}
-        <FormItem name="rating">
-          <StarRating value={rating} onChange={setRating} />
-        </FormItem>
+      <input type="hidden" name="rating" value={rating.toString()} />
 
-        {/* Botón alineado a la derecha */}
+      <div className="flex flex-col sm:flex-row sm:justify-between">
+        <div className="w-full sm:w-auto sm:text-right">
+          <StarRating value={rating} onChange={setRating}/>
+        </div>
+
         <Button
           type="submit"
-          disabled={loading || rating === 0} // Evita enviar si no se seleccionó una calificación
-          className="text-white rounded-md"
+          disabled={loading || rating === 0}
+          className="text-white rounded-md mt-2 sm:mt-0 sm:self-end sm:ml-4"
           color="primary"
         >
           {loading ? "Enviando..." : "Comentar"}

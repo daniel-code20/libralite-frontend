@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { gql, useApolloClient } from '@apollo/client';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, useDisclosure } from '@nextui-org/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, Button, Input, useDisclosure } from '@nextui-org/react';
 import Swal from 'sweetalert2';
 
-// Definición de interfaz para el objeto Gender
 interface Gender {
   id: string;
   name: string;
@@ -52,7 +51,7 @@ const EditGenderButton: React.FC<{ gender: Gender }> = ({ gender }) => {
       return;
     }
 
-    const file = selectedImages[0];  // Asumiendo que solo se sube una imagen
+    const file = selectedImages[0]; 
 
     try {
       const { data } = await client.mutate({
@@ -98,8 +97,8 @@ const EditGenderButton: React.FC<{ gender: Gender }> = ({ gender }) => {
       <Button
         color="primary"
         radius="sm"
-        variant="flat"
-        className='font-medium'
+        variant="light"
+        className='font-normal'
         onClick={() => {
           onOpen();
           setCategoryName(gender.name);
@@ -128,7 +127,7 @@ const EditGenderButton: React.FC<{ gender: Gender }> = ({ gender }) => {
                 <input
                   type="file"
                   className="w-full p-2 rounded"
-                  required={!gender.image}  // Si la imagen ya está presente, no se requiere seleccionar otra
+                  required={!gender.image}
                   onChange={handleImageChange}
                 />
               </div>
