@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import AdminSideBar from "./AdminSideBar";
-import { FaBars, FaTimes } from "react-icons/fa";
 import { FiSliders } from "react-icons/fi";
 import { Button } from "@nextui-org/button";
 import jsPDF from "jspdf";
@@ -53,7 +52,6 @@ const UPDATE_ESTADO_ENVIO = gql`
 `;
 
 export const AdminBuysList: React.FC = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [filter, setFilter] = useState<"latest" | "oldest" | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,6 +59,26 @@ export const AdminBuysList: React.FC = () => {
     GET_ALL_BUYS
   );
   const [updateEstadoEnvio] = useMutation(UPDATE_ESTADO_ENVIO);
+
+  const filterRef = useRef<HTMLDivElement | null>(null);
+
+  // Función para cerrar el filtro cuando se hace clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as Node)
+      ) {
+        setFilterOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleEstadoChange = async (id: string, newEstado: string) => {
     await updateEstadoEnvio({ variables: { id, estadoEnvio: newEstado } });
@@ -141,87 +159,90 @@ export const AdminBuysList: React.FC = () => {
   const filteredBuys = applySearch(applyFilter(data?.buys || []));
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-800">
-      <AdminSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div
-        className={`flex-grow flex flex-col transition-all duration-300 ${
-          sidebarOpen ? "ml-60" : "ml-0"
-        } lg:ml-60`}
-      >
-        <header className="bg-white shadow flex items-center justify-between p-4 sticky top-0 z-20">
-          <div className="flex items-center space-x-4">
-            <button
-              className="lg:hidden text-gray-700"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              {sidebarOpen ? (
-                <FaTimes className="w-6 h-6" />
-              ) : (
-                <FaBars className="w-6 h-6" />
-              )}
-            </button>
-            <h1 className="text-xl sm:text-2xl font-semibold">
+    <div className="flex min-h-screen bg-gray-50 text-gray-800 flex-col lg:flex-row">
+      {/* Sidebar responsive */}
+
+      <div className="flex-grow flex flex-col transition-all duration-300 w-full">
+        <AdminSideBar />
+        <header className="bg-white shadow flex flex-wrap sm:flex-nowrap items-center justify-center sm:justify-between sm:pl-16 gap-2 p-4  z-20 lg:ml-60">
+          <div className="flex items-center space-x-4 text-center sm:text-left">
+            <h1 className="text-lg sm:text-xl font-semibold ">
               Gestión de Compras
             </h1>
           </div>
 
-          <div className="flex flex-wrap gap-2 items-center">
+          {/* Controles */}
+          <div className="flex flex-wrap gap-2 items-center justify-center sm:justify-start w-full sm:w-auto">
             <input
               type="text"
               placeholder="Buscar cliente..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-3 py-1.5 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-1.5 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
             />
+
             <Button
               onClick={exportPDF}
               color="primary"
               size="sm"
-              className="shadow-md"
+              className="shadow-md text-sm px-3"
             >
-              Exportar PDF
+              <span className="hidden sm:inline">Exportar PDF</span>
+              <span className="sm:hidden">PDF</span>
             </Button>
+
             <Button
               onClick={exportExcel}
               color="success"
               size="sm"
-              className="shadow-md"
+              className="shadow-md text-sm px-3"
             >
-              Exportar Excel
+              <span className="hidden sm:inline">Exportar Excel</span>
+              <span className="sm:hidden">Excel</span>
             </Button>
-            <Button
-              className="text-gray-700 flex items-center bg-white border shadow-sm hover:bg-gray-100"
-              radius="sm"
-              variant="light"
-              onClick={() => setFilterOpen(!filterOpen)}
-            >
-              <FiSliders className="mr-2" />
-              Ordenar
-            </Button>
-            {filterOpen && (
-              <div className="absolute right-4 top-20 w-48 bg-white border rounded shadow-lg z-30">
-                <button
-                  className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
-                  onClick={() => setFilter("latest")}
-                >
-                  Más reciente
-                </button>
-                <button
-                  className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
-                  onClick={() => setFilter("oldest")}
-                >
-                  Más antiguo
-                </button>
-              </div>
-            )}
+
+            <div className="relative">
+              <Button
+                className="text-gray-700 flex items-center bg-white border shadow-sm hover:bg-gray-100"
+                radius="sm"
+                variant="light"
+                onClick={() => setFilterOpen(!filterOpen)}
+              >
+                <FiSliders className="mr-2" />
+                {filter === "latest" ? "Más reciente" : "Más antiguo"}
+              </Button>
+
+              {filterOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-30">
+                  <button
+                    className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
+                    onClick={() => {
+                      setFilter("latest");
+                      setFilterOpen(false);
+                    }}
+                  >
+                    Más reciente
+                  </button>
+                  <button
+                    className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
+                    onClick={() => {
+                      setFilter("oldest");
+                      setFilterOpen(false);
+                    }}
+                  >
+                    Más antiguo
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
-        <main className="flex-grow p-4">
-          <div className="max-w-[1400px] mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-              <table className="min-w-full text-sm text-left text-gray-700">
-                <thead className="bg-gray-100 text-gray-800 font-medium">
+        <main className="pt-4 px-4 transition-all duration-300 lg:ml-60">
+          <div className="max-w-7xl mx-auto bg-white rounded-md shadow-lg overflow-hidden animate__animated animate__fadeInUp">
+            <div className="overflow-x-auto w-full">
+              <table className="min-w-full table-auto text-xs sm:text-sm text-left text-gray-700">
+                <thead className="bg-gray-100 text-gray-800 font-medium uppercase tracking-wider">
                   <tr>
                     <th className="px-4 py-3">Usuario</th>
                     <th className="px-4 py-3">Dirección</th>
@@ -236,10 +257,7 @@ export const AdminBuysList: React.FC = () => {
                 </thead>
                 <tbody>
                   {filteredBuys.map((buy: Buy, index: number) => (
-                    <tr
-                      key={index}
-                      className="hover:bg-gray-50 border-b last:border-none"
-                    >
+                    <tr key={index} className="border-b hover:bg-gray-50">
                       <td className="px-4 py-3">
                         {buy.cliente.name} ({buy.cliente.email})
                       </td>
@@ -256,7 +274,7 @@ export const AdminBuysList: React.FC = () => {
                       </td>
                       <td className="px-4 py-3">
                         <select
-                          className="border px-2 py-1 rounded-md bg-white"
+                          className="border px-2 py-1 rounded-md bg-white text-sm"
                           value={buy.estadoEnvio}
                           onChange={(e) =>
                             handleEstadoChange(buy.id, e.target.value)

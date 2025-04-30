@@ -6,11 +6,17 @@ import AdminEditBookModal from "../../Modal/AdminEditBookModal";
 import DeleteBookButton from "../../graphql/DeleteBookButton";
 import AdminSideBar from "../components/AdminSideBar";
 import { AdminSearchBar } from "../components/AdminSearchBar";
-import { FaBars, FaTimes, FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import {
+  FaBars,
+  FaTimes,
+  FaStar,
+  FaStarHalfAlt,
+  FaRegStar,
+} from "react-icons/fa";
 import { Review } from "../../components/Review";
 
 type Gender = {
-  id: string;  // Ahora el id es de tipo string, no any
+  id: string; // Ahora el id es de tipo string, no any
   name: string;
 };
 
@@ -135,59 +141,43 @@ export const AdminBookDetail = () => {
   const gender = genderData?.genders.find(
     (g: Gender) => g.id === book?.gender.id
   );
-  
-
 
   if (!book || !gender)
     return <p>No se encontraron datos del libro o del género.</p>;
 
-   // Función para renderizar estrellas
-    const renderStars = (rating: number) => {
-      const stars = [];
-      for (let i = 1; i <= 5; i++) {
-        if (rating >= i) {
-          stars.push(<FaStar key={i} className="text-yellow-400" />);
-        } else if (rating >= i - 0.5) {
-          stars.push(<FaStarHalfAlt key={i} className="text-yellow-400" />);
-        } else {
-          stars.push(<FaRegStar key={i} className="text-yellow-400" />);
-        }
+  // Función para renderizar estrellas
+  const renderStars = (rating: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (rating >= i) {
+        stars.push(<FaStar key={i} className="text-yellow-400" />);
+      } else if (rating >= i - 0.5) {
+        stars.push(<FaStarHalfAlt key={i} className="text-yellow-400" />);
+      } else {
+        stars.push(<FaRegStar key={i} className="text-yellow-400" />);
       }
-      return <div className="flex items-center">{stars}</div>;
-    };
-  
-    // Calcular el rating promedio
-    const averageRating = book.reviews.length
-    ? book.reviews.reduce((sum: number, review: { rating: number }) => sum + review.rating, 0)
+    }
+    return <div className="flex items-center">{stars}</div>;
+  };
+
+  // Calcular el rating promedio
+  const averageRating = book.reviews.length
+    ? book.reviews.reduce(
+        (sum: number, review: { rating: number }) => sum + review.rating,
+        0
+      )
     : 0;
 
   return (
     <>
       <div className="flex min-h-screen bg-white overflow-y-auto">
-        <AdminSideBar
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
-        />
-        <div
-          className={`flex-grow flex flex-col transition-all duration-300 ${
-            sidebarOpen ? "ml-60" : "ml-0"
-          } lg:ml-60`}
-        >
-          <header className="bg-white shadow-md flex items-center justify-between p-4 relative z-20">
-            <button
-              className="lg:hidden p-2"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              {sidebarOpen ? (
-                <FaTimes className="h-6 w-6 text-black" />
-              ) : (
-                <FaBars className="h-6 w-6 text-black" />
-              )}
-            </button>
+        <div className="flex-grow flex flex-col transition-all duration-300">
+          <header className="bg-white shadow-md flex items-center justify-between p-4 relative z-20 lg:ml-60">
+            <AdminSideBar />
             <AdminSearchBar />
           </header>
 
-          <div className="flex-grow flex flex-col p-4 lg:p-8">
+          <div className="flex-grow flex flex-col p-4 lg:p-8 lg:ml-60">
             <div className="max-w-6xl mx-auto p-6 lg:grid lg:grid-cols-3 lg:gap-8">
               {book && (
                 <>
@@ -209,12 +199,12 @@ export const AdminBookDetail = () => {
                       by {book.author?.name || "Autor desconocido"}
                     </h2>
                     {/* Mostrar estrellas */}
-                  <div className="flex items-center gap-2 mb-4">
-                    {renderStars(averageRating)}
-                    <span className="text-gray-500 text-sm">
-                      ({book.reviews.length} reseñas)
-                    </span>
-                  </div>
+                    <div className="flex items-center gap-2 mb-4">
+                      {renderStars(averageRating)}
+                      <span className="text-gray-500 text-sm">
+                        ({book.reviews.length} reseñas)
+                      </span>
+                    </div>
                     <p className="text-md text-gray-700 mb-4">
                       {book.description}
                     </p>
@@ -252,7 +242,7 @@ export const AdminBookDetail = () => {
                     </div>
                   </div>
                   <div className="w-full lg:col-span-3 flex flex-col space-y-6">
-                    <Review bookId={book.id} userId={userId} isAdmin/>
+                    <Review bookId={book.id} userId={userId} isAdmin />
                   </div>
                 </>
               )}

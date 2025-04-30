@@ -47,7 +47,7 @@ export const AdminSearchResult: React.FC<SearchResultProps> = ({ searchTerm }) =
   }
 
   return (
-    <div className="bg-white shadow-lg rounded-lg max-h-60 overflow-auto">
+    <div className="bg-white shadow-lg rounded-lg  justify-center max-h-60 overflow-auto">
       <Listbox aria-label="Search Results">
         {data.books.map((book: Book) => (
           <ListboxItem key={book.id} className="p-4 border-b border-gray-200 hover:bg-gray-100">

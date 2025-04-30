@@ -58,27 +58,27 @@ export const BuysList: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
-      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div
-        className={`flex-grow flex flex-col transition-all duration-300 ${
-          sidebarOpen ? "ml-60" : "ml-0"
-        } lg:ml-60`}
-      >
-        <header className="bg-white shadow flex items-center justify-between p-4 sticky top-0 z-20">
+      <div className="flex-grow flex flex-col transition-all duration-300 w-full">
+        <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+        <header className="bg-white shadow flex items-center justify-between p-4 sticky z-20 lg:ml-60">
+          {/* Parte izquierda del header con el botón y el título */}
           <div className="flex items-center space-x-4">
-            <button
-              className="lg:hidden text-gray-700"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              {sidebarOpen ? (
-                <FaTimes className="w-6 h-6" />
-              ) : (
+            {/* Botón de menú, solo en pantallas pequeñas */}
+            {!sidebarOpen && (
+              <button
+                className="lg:hidden text-gray-700"
+                onClick={() => setSidebarOpen(true)}
+              >
                 <FaBars className="w-6 h-6" />
-              )}
-            </button>
+              </button>
+            )}
+
+            {/* Título */}
             <h1 className="text-xl sm:text-2xl font-semibold">Mis Compras</h1>
           </div>
 
+          {/* Parte derecha del header con el botón de ordenamiento */}
           <div className="relative">
             <Button
               className="text-gray-700 flex items-center bg-white border shadow-sm hover:bg-gray-100"
@@ -87,19 +87,26 @@ export const BuysList: React.FC = () => {
               onClick={() => setFilterOpen(!filterOpen)}
             >
               <FiSliders className="mr-2" />
-              Ordenar
+              {filter === "latest" ? "Más reciente" : "Más antiguo"}
             </Button>
+
             {filterOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-30">
                 <button
                   className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
-                  onClick={() => setFilter("latest")}
+                  onClick={() => {
+                    setFilter("latest");
+                    setFilterOpen(false);
+                  }}
                 >
                   Más reciente
                 </button>
                 <button
                   className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
-                  onClick={() => setFilter("oldest")}
+                  onClick={() => {
+                    setFilter("oldest");
+                    setFilterOpen(false);
+                  }}
                 >
                   Más antiguo
                 </button>
@@ -108,11 +115,11 @@ export const BuysList: React.FC = () => {
           </div>
         </header>
 
-        <main className="flex-grow p-4">
-          <div className="max-w-[1400px] mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-              <table className="min-w-full text-sm text-left text-gray-700">
-                <thead className="bg-gray-100 text-gray-800 font-medium">
+        <main className="pt-4 px-4 transition-all duration-300 lg:ml-60">
+          <div className="max-w-7xl mx-auto bg-white rounded-md shadow-lg overflow-hidden animate__animated animate__fadeInUp">
+            <div className="overflow-x-auto w-full">
+              <table className="min-w-full table-auto text-xs sm:text-sm text-left text-gray-700">
+                <thead className="bg-gray-100 text-gray-800 font-medium uppercase tracking-wider">
                   <tr>
                     <th className="px-4 py-3">Usuario</th>
                     <th className="px-4 py-3">Dirección</th>

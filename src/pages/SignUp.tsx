@@ -79,13 +79,13 @@ export const SignUp = () => {
 
   return (
     <div className="flex h-screen overflow-hidden animate__animated animate__fadeIn">
-      <div className="flex-1 flex justify-center items-center p-6 md:p-12 bg-white">
-        <div className="w-full max-w-lg  p-4 rounded-md shadow-2xl">
+      <div className="flex-1 flex justify-center items-center p-6 md:p-12 bg-blue-400">
+        <div className="w-full max-w-lg  p-4 rounded-md bg-white shadow-2xl">
           <div className="flex items-center text-cyan-400 mb-2">
             <img src={logoImg} alt="logo" className="w-11 mr-3" />
             <h3 className="font-bold bg-gradient-to-tr from-blue-500 to-cyan-400 text-transparent bg-clip-text loading-noreal">BookFlow</h3>
           </div>
-          <h1 className="text-2xl font-bold mb-2">Crear Cuenta</h1>
+          <h1 className="text-2xl font-bold ">Crear Cuenta</h1>
           <p className="text-gray-500 mb-2">
             Crea una cuenta para ver nuestro stock disponible y disfruta de los mejores libros
           </p>
@@ -172,7 +172,7 @@ export const SignUp = () => {
           </p>
         </div>
       </div>
-      <div className="hidden md:flex flex-1 justify-center items-center animate__animated animate__floatAnimation">
+      <div className="hidden md:flex flex-1 bg-white justify-center items-center animate__animated animate__floatAnimation">
         <Lottie animationData={animationData} style={{ width: '70%' }} />
       </div>
     </div>

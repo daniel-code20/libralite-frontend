@@ -4,7 +4,13 @@ import { Link, useParams } from "react-router-dom";
 import { Button, Image } from "@nextui-org/react";
 import SideBar from "../components/SideBar";
 import { SearchBar } from "../components/SearchBar";
-import { FaBars, FaTimes, FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import {
+  FaBars,
+  FaTimes,
+  FaStar,
+  FaStarHalfAlt,
+  FaRegStar,
+} from "react-icons/fa";
 import ReviewForm from "../forms/ReviewForm";
 import { Review } from "../components/Review";
 
@@ -137,8 +143,11 @@ export const BookDetail: React.FC = () => {
 
   // Calcular el rating promedio
   const averageRating = book.reviews.length
-  ? book.reviews.reduce((sum: number, review: { rating: number }) => sum + review.rating, 0)
-  : 0;
+    ? book.reviews.reduce(
+        (sum: number, review: { rating: number }) => sum + review.rating,
+        0
+      )
+    : 0;
 
   return (
     <div className="flex min-h-screen bg-white overflow-y-auto">
@@ -149,16 +158,15 @@ export const BookDetail: React.FC = () => {
         } lg:ml-60`}
       >
         <header className="bg-white shadow-md flex items-center justify-between p-4 relative z-20">
-          <button
-            className="lg:hidden p-2"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            {sidebarOpen ? (
-              <FaTimes className="h-6 w-6 text-black" />
-            ) : (
-              <FaBars className="h-6 w-6 text-black" />
-            )}
-          </button>
+          {!sidebarOpen && (
+            <button
+              className="lg:hidden text-gray-700"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <FaBars className="w-6 h-6" />
+            </button>
+          )}
+
           <SearchBar />
         </header>
 
